@@ -36,7 +36,7 @@ export const IMXContextProvider: React.FC<IMXContextProviderProps> = ({ children
   };
 
   useEffect(() => {
-    getUserPassportData()
+    // getUserPassportData()
   }, [])
   
   const value: IMXContextType = {
