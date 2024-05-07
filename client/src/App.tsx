@@ -16,19 +16,21 @@ import AccountSetting from './pages/AccountPages/AccountSetting';
 import ConnectWallet from "./pages/ConnectWallet";
 import PassportLoginSuccess from "./pages/PassportLoginSuccess";
 import { IMXContextProvider } from "./context/ImmutableContext";
+import PassportLogoutSuccess from "./pages/PassportLogoutSuccess";
 
 
 function App() {
   return (
     <>
-    <IMXContextProvider>
       
       <Router>
+    <IMXContextProvider>
         <Routes>
 
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/passportlogin" element={<PassportLoginSuccess />} />
+          <Route path="/passportlogout" element={<PassportLogoutSuccess />} />
           <Route path="/connectwallet" element={<ConnectWallet />} />
           <Route path='/signup' element={<Signup />} />
           <Route path='/itempage' element={<ItemPage />} />
@@ -42,9 +44,9 @@ function App() {
           <Route path="/logout" element={<Logout />} />
           <Route path='/accountsetting' element={<AccountSetting />} />
         </Routes>
+    </IMXContextProvider>
       </Router>
 
-    </IMXContextProvider>
     </>
   );
 }

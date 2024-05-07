@@ -19,7 +19,7 @@ import { useIMXContext } from "../context/ImmutableContext";
 
 const Header = () => {
   const navigate = useNavigate();
-  const{userPassportData}=useIMXContext()
+  const{userPassportData,logoutWithUserPassport}=useIMXContext()
 
   const handle_connectWallet = () => {
     navigate('/connectwallet');
@@ -118,7 +118,7 @@ const Header = () => {
                   <img src={ProfileImg} width={"60px"} alt="profile-img" />
                 </div>
                 <div>
-                  <h4>John Due</h4>
+                  <h4>{userPassportData?`${userPassportData.email.split('@')[0]}`:"Connect Wallet"}</h4>
                   <span>View profile</span>
                 </div>
               </div>
@@ -163,10 +163,10 @@ const Header = () => {
               </div>
             </div>
             <div className="profile-bottom">
-              <Link to="/signup" className="custom-btn d-block">
+              <div onClick={() => userPassportData?logoutWithUserPassport():handle_connectWallet()} className="custom-btn d-block">
                 <img src={Signout} alt="signout" />
-                SIGN OUT
-              </Link>
+                {userPassportData?"Sign Out":"Connect Wallet"}
+              </div>
             </div>
           </div>
         </div>

@@ -5,14 +5,13 @@ import Header from "../components/Header.tsx";
 import { Row, Col } from "react-bootstrap";
 import { MorraLogo } from "../Imports/ImportImages.ts";
 import { checkout, config } from "@imtbl/sdk";
-// import { passport } from "@imtbl/sdk";
-import { useNavigate } from "react-router-dom";
 import { useIMXContext } from "../context/ImmutableContext.tsx";
+// import { passport } from "@imtbl/sdk";
+// import { useNavigate } from "react-router-dom";
 // import { Link } from 'react-router-dom';
-
+// const checkoutSDK = new checkout.Checkout();
 const ConnectWallet = () => {
-  const navigate = useNavigate();
-  const{getUserPassportData}=useIMXContext()
+  const{getUserPassportData,setImxConnectionData,navigate}=useIMXContext()
 
   const [connect, setConnect] =
     useState<checkout.Widget<typeof checkout.WidgetType.CONNECT>>();
@@ -50,7 +49,7 @@ const ConnectWallet = () => {
       checkout.ConnectEventType.SUCCESS,
       (data: checkout.ConnectionSuccess) => {
         console.log("success", data);
-        // navigate('/connectwallet');
+        setImxConnectionData(data)
         getUserPassportData()
         navigate('/');
 
