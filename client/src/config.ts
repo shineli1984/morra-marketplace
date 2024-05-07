@@ -9,7 +9,7 @@ interface PassportModuleConfiguration {
   audience?: string;
 }
 
-export const IS_TEST_MODE = false ;
+export const IS_TEST_MODE = false ; 
 
 export const BASE_URL = IS_TEST_MODE?"http://localhost:5173/":"https://morra-marketplace-decryptedlabs.vercel.app/";
 
