@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { CLIENT, passportInstance } from "../config";
 import { NavigateFunction, useNavigate } from "react-router-dom";
-import { ClientType, UserProfileType } from "../types";
+import { ClientType, UserProfileType } from "../types"; 
 
 interface IMXContextType {
   userPassportData: any;
