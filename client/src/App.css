@@ -942,12 +942,13 @@ footer .footer-bottom p{
   border-radius: 5px;
   width: fit-content;
   font-size: 12px;
+  font-weight: bold;
   text-transform: uppercase;
   position: absolute;
   top: 14px;
   right: 14px;
   padding: 9px 16px;
-  background-color: var(--black);
+  background-color: var(--red);
 }
 
 .item-page .col-lg-6:nth-child(1){

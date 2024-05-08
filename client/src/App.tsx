@@ -33,7 +33,7 @@ function App() {
           <Route path="/passportlogout" element={<PassportLogoutSuccess />} />
           <Route path="/connectwallet" element={<ConnectWallet />} />
           <Route path='/signup' element={<Signup />} />
-          <Route path='/itempage' element={<ItemPage />} />
+          <Route path='/itempage/:token/:id' element={<ItemPage />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/product' element={<Product />} />
           <Route path='/listing' element={<Listing />} />

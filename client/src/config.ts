@@ -3,7 +3,7 @@ import { PassportModuleConfiguration } from "./types";
 const ENV = import.meta.env;
 
 export const IS_TEST_MODE = true;
-
+export const CHAIN_NAME = "imtbl-zkevm-testnet"
 export const PUBLISHABLE_KEY = ENV.VITE_PUBLISHABLE_KEY;
 export const CLIENT_ID = IS_TEST_MODE
   ? ENV.VITE_CLIENT_ID

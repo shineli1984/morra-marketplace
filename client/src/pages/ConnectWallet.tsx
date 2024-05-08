@@ -6,11 +6,12 @@ import { Row, Col } from "react-bootstrap";
 import { MorraLogo } from "../Imports/ImportImages.ts";
 import { checkout, config } from "@imtbl/sdk";
 import { useIMXContext } from "../context/ImmutableContext.tsx";
+import { ImxConnectionDataType } from "../types.ts";
 // import { useNavigate } from "react-router-dom";
 // import { Link } from 'react-router-dom';
 // const checkoutSDK = new checkout.Checkout();
 const ConnectWallet = () => {
-  const{getUserPassportData,setImxConnectionData,navigate}=useIMXContext()
+  const{getUserData,setImxConnectionData,navigate}=useIMXContext()
 
   
   const [connect, 
@@ -50,10 +51,9 @@ const ConnectWallet = () => {
 
     connect.addListener(
       checkout.ConnectEventType.SUCCESS,
-      (data: checkout.ConnectionSuccess) => {
+      (data: ImxConnectionDataType) => {
         console.log("success", data);
         setImxConnectionData(data)
-        getUserPassportData()
         navigate('/');
 
         // connect.unmount();
@@ -63,12 +63,13 @@ const ConnectWallet = () => {
       checkout.ConnectEventType.FAILURE,
       (data: checkout.ConnectionFailed) => {
         console.log("failure", data);
-        getUserPassportData()
+        setImxConnectionData(null)
+
 
       }
     );
     connect.addListener(checkout.ConnectEventType.CLOSE_WIDGET, () => {
-      getUserPassportData()
+      getUserData()
       connect.unmount();
         navigate('/');
 

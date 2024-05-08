@@ -1,19 +1,13 @@
 // import React from 'react'
 import { useEffect } from 'react'
-import {  LOGOUT_URL, passportInstance } from '../config.ts'; 
 import Header from '../components/Header.tsx';
 import { Row } from 'react-bootstrap';
 import { useIMXContext } from '../context/ImmutableContext.tsx';
 
 const PassportLogoutSuccess = () => {
-  const{setuserPassportData,navigate}=useIMXContext()
+  const{logoutSuccessCallback}=useIMXContext()
   useEffect(() => {
-    const handle = async () =>{
-      await passportInstance.logoutSilentCallback(LOGOUT_URL); 
-      setuserPassportData(null)
-      navigate("/")
-    } 
-    handle()
+    logoutSuccessCallback()
   }, []);
   return (
     <main className='height-page-style'>

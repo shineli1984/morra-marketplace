@@ -19,7 +19,7 @@ import { useIMXContext } from "../context/ImmutableContext";
 
 const Header = () => {
   const navigate = useNavigate();
-  const{userPassportData,logoutWithUserPassport}=useIMXContext()
+  const{userProfileData,logoutWithUserPassport,imxConnectionData}=useIMXContext()
 
   const handle_connectWallet = () => {
     navigate('/connectwallet');
@@ -85,14 +85,14 @@ const Header = () => {
               <img src={DropdownSm} alt="dropdown" />
             </span>
             <div className="header-btn">
-              <button onClick={() => userPassportData?setIsProfileOpen(true):handle_connectWallet()} className="mx-3">
+              <button onClick={() => userProfileData!==undefined?setIsProfileOpen(true):handle_connectWallet()} className="mx-3">
                 <img
-                  src={UserIcon}
+                  src={imxConnectionData?imxConnectionData?.walletProviderInfo?.icon:UserIcon}
                   width={"18px"}
                   style={{ marginRight: "8px" }}
                   alt="usericon"
                 />
-                <span className="d-lg-block d-none">{userPassportData?`${userPassportData.email.split('@')[0]}`:"Connect Wallet"}</span>
+                <span className="d-lg-block d-none">{userProfileData==undefined?"Connect Wallet":`${userProfileData?.email?.split('@')[0]}`}</span>
                 <img
                   src={DropdownSm}
                   className="d-lg-block d-none"
@@ -115,10 +115,10 @@ const Header = () => {
             <div className="profile-header">
               <div>
                 <div className="picture">
-                  <img src={ProfileImg} width={"60px"} alt="profile-img" />
+                  <img src={imxConnectionData?imxConnectionData?.walletProviderInfo?.icon:ProfileImg} width={"60px"} alt="profile-img" />
                 </div>
                 <div>
-                  <h4>{userPassportData?`${userPassportData.email.split('@')[0]}`:"Connect Wallet"}</h4>
+                  <h4>{userProfileData?`${userProfileData?.email?.split('@')[0]}`:"Connect Wallet"}</h4>
                   <span>View profile</span>
                 </div>
               </div>
@@ -163,9 +163,9 @@ const Header = () => {
               </div>
             </div>
             <div className="profile-bottom">
-              <div onClick={() => userPassportData?logoutWithUserPassport():handle_connectWallet()} className="custom-btn d-block">
+              <div onClick={() => userProfileData?logoutWithUserPassport():handle_connectWallet()} className="custom-btn d-block">
                 <img src={Signout} alt="signout" />
-                {userPassportData?"Sign Out":"Connect Wallet"}
+                {userProfileData?"Sign Out":"Connect Wallet"}
               </div>
             </div>
           </div>

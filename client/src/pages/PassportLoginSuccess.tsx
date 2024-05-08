@@ -1,15 +1,13 @@
 // import React from 'react'
 import { useEffect } from 'react'
-import { passportInstance } from '../config.ts';
 import Header from '../components/Header.tsx';
 import { Row } from 'react-bootstrap';
 import { useIMXContext } from '../context/ImmutableContext.tsx';
 
 const PassportLoginSuccess = () => {
-  const{navigate}=useIMXContext()
+  const{loginSuccessCallback}=useIMXContext()
   useEffect(() => {
-    passportInstance.loginCallback();
-    navigate("/")
+    loginSuccessCallback()
   }, []);
   return (
     <main className='height-page-style'>
