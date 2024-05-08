@@ -1,86 +1,84 @@
 // import React from 'react'
-// import { useEffect, useState } from "react";
-// import { PUBLISHABLE_KEY, passportInstance } from "../config.ts";
+import { useEffect, useState } from "react";
+import { PUBLISHABLE_KEY, passportInstance } from "../config.ts";
 import Header from "../components/Header.tsx";
 import { Row, Col } from "react-bootstrap";
 import { MorraLogo } from "../Imports/ImportImages.ts";
-// import { checkout, config } from "@imtbl/sdk";//TODO:
-// import { useIMXContext } from "../context/ImmutableContext.tsx";//TODO:
-// import { passport } from "@imtbl/sdk";
+import { checkout, config } from "@imtbl/sdk";
+import { useIMXContext } from "../context/ImmutableContext.tsx";
 // import { useNavigate } from "react-router-dom";
 // import { Link } from 'react-router-dom';
 // const checkoutSDK = new checkout.Checkout();
 const ConnectWallet = () => {
-  // const{getUserPassportData,setImxConnectionData,navigate}=useIMXContext()//TODO:
+  const{getUserPassportData,setImxConnectionData,navigate}=useIMXContext()
 
-  //TODO:
-  // const [connect, 
-  //   setConnect
-  // ] =
-  //   useState<checkout.Widget<typeof checkout.WidgetType.CONNECT>>();
+  
+  const [connect, 
+    setConnect
+  ] =
+    useState<checkout.Widget<typeof checkout.WidgetType.CONNECT>>();
 
-  //TODO:
-  // const Connect__Passport__Handle = async () => {
-    // try {
+  
+  const Connect__Passport__Handle = async () => {
+    try {
  
-    //   const baseConfig1 = {
-    //     environment: config.Environment.SANDBOX,
-    //     publishableKey: PUBLISHABLE_KEY,
-    //   };
+      const baseConfig1 = {
+        environment: config.Environment.SANDBOX,
+        publishableKey: PUBLISHABLE_KEY,
+      };
 
-    //   // Instantiate the Checkout SDK with passport configured
-    //   const checkoutSDK1 = new checkout.Checkout({
-    //     baseConfig: baseConfig1,
-    //     passport: passportInstance,
-    //   });
-    //   const widgets = await checkoutSDK1.widgets({
-    //     config: { theme: checkout.WidgetTheme.DARK },
-    //   });
-    //   const connect = widgets.create(checkout.WidgetType.CONNECT);
-    //   setConnect(connect);
-    // } catch (error) {
-    //   console.error(error);
-    // } finally {
-    // }
-  // };
+      const checkoutSDK1 = new checkout.Checkout({
+        baseConfig: baseConfig1,
+        passport: passportInstance,
+      });
+      const widgets = await checkoutSDK1.widgets({
+        config: { theme: checkout.WidgetTheme.DARK },
+      });
+      const connect = widgets.create(checkout.WidgetType.CONNECT);
+      setConnect(connect);
+    } catch (error) {
+      console.error(error);
+    } finally {
+    }
+  };
 
-  //TODO:
-  // useEffect(() => {
-  //   if (!connect) return;
+  
+  useEffect(() => {
+    if (!connect) return;
 
-  //   connect.mount("connect");
+    connect.mount("connect");
 
-  //   connect.addListener(
-  //     checkout.ConnectEventType.SUCCESS,
-  //     (data: checkout.ConnectionSuccess) => {
-  //       console.log("success", data);
-  //       setImxConnectionData(data)
-  //       getUserPassportData()
-  //       navigate('/');
+    connect.addListener(
+      checkout.ConnectEventType.SUCCESS,
+      (data: checkout.ConnectionSuccess) => {
+        console.log("success", data);
+        setImxConnectionData(data)
+        getUserPassportData()
+        navigate('/');
 
-  //       // connect.unmount();
-  //     }
-  //   );
-  //   connect.addListener(
-  //     checkout.ConnectEventType.FAILURE,
-  //     (data: checkout.ConnectionFailed) => {
-  //       console.log("failure", data);
-  //       getUserPassportData()
+        // connect.unmount();
+      }
+    );
+    connect.addListener(
+      checkout.ConnectEventType.FAILURE,
+      (data: checkout.ConnectionFailed) => {
+        console.log("failure", data);
+        getUserPassportData()
 
-  //     }
-  //   );
-  //   connect.addListener(checkout.ConnectEventType.CLOSE_WIDGET, () => {
-  //     getUserPassportData()
-  //     connect.unmount();
-  //       navigate('/');
+      }
+    );
+    connect.addListener(checkout.ConnectEventType.CLOSE_WIDGET, () => {
+      getUserPassportData()
+      connect.unmount();
+        navigate('/');
 
-  //   });
-  // }, [connect]);
+    });
+  }, [connect]);
 
-  //TODO:
-  // useEffect(() => {
-  //   Connect__Passport__Handle();
-  // }, []);
+  
+  useEffect(() => {
+    Connect__Passport__Handle();
+  }, []);
 
   return (
     <main className="height-page-style">
