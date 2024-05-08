@@ -1,6 +1,6 @@
 // import React from 'react'
 import { useEffect } from 'react'
-import { passportInstance } from '../config.ts';
+// import { passportInstance } from '../config.ts';//TODO:
 import Header from '../components/Header.tsx';
 import { Row } from 'react-bootstrap';
 import { useIMXContext } from '../context/ImmutableContext.tsx';
@@ -8,7 +8,7 @@ import { useIMXContext } from '../context/ImmutableContext.tsx';
 const PassportLoginSuccess = () => {
   const{navigate}=useIMXContext()
   useEffect(() => {
-    passportInstance.loginCallback();
+    // passportInstance.loginCallback();//TODO:
     navigate("/")
   }, []);
   return (

@@ -31,8 +31,8 @@ const Home = () => {
       <section className='homepage-banner'>
         <div className='container'>
           <Slider {...settingsMain} asNavFor={nav2} ref={slider => (setSlider1(slider))}>
-            {slidesData.map((slide) =>
-              <div className='banner-content'>
+            {slidesData.map((slide,idx) =>
+              <div className='banner-content' key={idx}>
                 <img className="slick-slide-image" alt='image' src={width < 640 ? slide.imageUrlMob : slide.imageUrl} />
                 <div className="meta" key={slide.id}>
                   <h1 className="page-title slick-slide-title">{slide.title}</h1>
