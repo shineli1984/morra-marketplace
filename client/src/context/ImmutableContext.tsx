@@ -15,10 +15,9 @@ import {
 } from "../config";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { ImxConnectionDataType, Provider, UserProfileType } from "../types";
-import { checkout, config, passport ,x} from "@imtbl/sdk";
+import { checkout, config } from "@imtbl/sdk";
 import { ProviderEvent } from "@imtbl/sdk/passport";
-import { ethers } from "ethers";
-import { Wallet } from '@ethersproject/wallet';
+// import { ethers } from "ethers";
 
 interface IMXContextType {
   userProfileData: UserProfileType;
@@ -48,7 +47,7 @@ export const IMXContextProvider: React.FC<IMXContextProviderProps> = ({
 }) => {
   //!==================== STATES =================
   const navigate = useNavigate();
-  const [PROVIDER, SET_PROVIDER] = useState<Provider | null>(null);
+  const [PROVIDER, ] = useState<Provider | null>(null);
   const [connectModal, setConnectModal] =
     useState<checkout.Widget<typeof checkout.WidgetType.CONNECT>>();
 
@@ -63,59 +62,59 @@ export const IMXContextProvider: React.FC<IMXContextProviderProps> = ({
   //!==================== USER WALLET CONNECTION AND PROVIDERS =================
 
 
-async function sign(passportInstance: passport.Passport) {
+// async function sign(passportInstance: passport.Passport) {
 
-    const provider = passportInstance.connectEvm();
-    const web3Provider = new ethers.providers.Web3Provider(provider);
-    const signer = web3Provider.getSigner();
-    // const chainId = 13371; // zkEVM mainnet 
-    const chainId = 13473; // zkEVM testnet 
-    const address = await signer.getAddress();
+//     const provider = passportInstance.connectEvm();
+//     const web3Provider = new ethers.providers.Web3Provider(provider);
+//     const signer = web3Provider.getSigner();
+//     // const chainId = 13371; // zkEVM mainnet 
+//     const chainId = 13473; // zkEVM testnet 
+//     const address = await signer.getAddress();
 
-    // Define our "domain separator" to ensure user signatures are unique across apps/chains
-    const domain = {
-        name: 'Ether Mail',
-        version: '1',
-        chainId,
-        verifyingContract: address,
-    };
+//     // Define our "domain separator" to ensure user signatures are unique across apps/chains
+//     const domain = {
+//         name: 'Ether Mail',
+//         version: '1',
+//         chainId,
+//         verifyingContract: address,
+//     };
 
-    const types = {
-        Person: [
-            { name: 'name', type: 'string' },
-            { name: 'wallet', type: 'address' },
-        ],
-        Mail: [
-            { name: 'from', type: 'Person' },
-            { name: 'to', type: 'Person' },
-            { name: 'contents', type: 'string' },
-        ]
-    };
+//     const types = {
+//         Person: [
+//             { name: 'name', type: 'string' },
+//             { name: 'wallet', type: 'address' },
+//         ],
+//         Mail: [
+//             { name: 'from', type: 'Person' },
+//             { name: 'to', type: 'Person' },
+//             { name: 'contents', type: 'string' },
+//         ]
+//     };
 
-    const message = {
-        from: {
-            name: 'Cow',
-            wallet: '0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826',
-        },
-        to: {
-            name: 'Bob',
-            wallet: '0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB',
-        },
-        contents: 'Hello, Bob!',
-    };
+//     const message = {
+//         from: {
+//             name: 'Cow',
+//             wallet: '0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826',
+//         },
+//         to: {
+//             name: 'Bob',
+//             wallet: '0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB',
+//         },
+//         contents: 'Hello, Bob!',
+//     };
 
-    let signature: string;
-    try {
-        signature = await signer._signTypedData(domain, types, message);
-        console.log("signature: ", signature);
-    } catch (error: any) {
-        // Handle user denying signature
-        if (error.code === 4001){
+//     let signature: string;
+//     try {
+//         signature = await signer._signTypedData(domain, types, message);
+//         console.log("signature: ", signature);
+//     } catch (error: any) {
+//         // Handle user denying signature
+//         if (error.code === 4001){
 
-        }
-    }
+//         }
+//     }
 
-}
+// }
 
   const getUserData = async () => {
     try {
@@ -263,9 +262,9 @@ async function sign(passportInstance: passport.Passport) {
   useEffect(() => {
     // const contractAddress = "0x1f7072f8c22f87d89aa27329094cdc04dcd7f1cc";
     // const accountAddress = "0x5cbD5063DdaE154c546860e2A4D2C16E2e1C786c";
-    // const accountAddress = "0x808f0597D8B83189ED43d61d40064195F71C0D15";
+    const accountAddress = "0x808f0597D8B83189ED43d61d40064195F71C0D15";
     //    listCollectionsByNFTOwner(CLIENT,chainName,accountAddress,contractAddress)
-    // getUserInventory(accountAddress);
+    getUserInventory(accountAddress);
 
     getUserData();
   }, []);
