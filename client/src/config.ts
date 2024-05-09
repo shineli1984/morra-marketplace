@@ -10,7 +10,6 @@ export const CLIENT_ID = IS_TEST_MODE
   : ENV.VITE_CLIENT_ID_VERCEL;
 export const API_KEY = ENV.VITE_API_KEY;
 
-// console.log({ PUBLISHABLE_KEY, CLIENT_ID, API_KEY });
 
 export const BASE_URL = IS_TEST_MODE
   ? "http://localhost:5173/"
@@ -20,8 +19,8 @@ export const LOGOUT_URL = `${BASE_URL}`;
 
 export const PASSPORT_CONFIG: PassportModuleConfiguration = {
   baseConfig: {
-    // environment: config.Environment.SANDBOX,
-    environment: config.Environment.PRODUCTION,
+    environment: config.Environment.SANDBOX,
+    // environment: config.Environment.PRODUCTION,
     publishableKey: PUBLISHABLE_KEY,
     apiKey: API_KEY,
   },

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import Row from "react-bootstrap/esm/Row";
@@ -16,9 +16,6 @@ import { useIMXContext } from "../context/ImmutableContext";
 
 function Inventory() {
   const { userInventoryData,navigate ,inventoryDataLoading} = useIMXContext();
-  useEffect(() => {
-    console.log("userInventoryData",userInventoryData)
-  }, [userInventoryData])
   
 //   const [inventory] = useState<any[] | []>(
 //     userInventoryData !== null ? userInventoryData.result : []

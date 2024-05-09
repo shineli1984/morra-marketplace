@@ -338,7 +338,7 @@
   dependencies:
     lodash.get "^4.4.2"
 
-"@biom3/react@^0.22.5":
+"@biom3/react@^0.22.8":
   version "0.22.8"
   resolved "https://registry.yarnpkg.com/@biom3/react/-/react-0.22.8.tgz#ba880d47c264b8bea3d664483c5a876d9d8cf76f"
   integrity sha512-3qGxYfxptqvMyftoj5aA3uaKWeeFtK9Bc3SdZX8t5L+kqcHjS5L1W1OnsNQ5xg+PYGqCM+emq1eol89HBzDmkQ==
@@ -967,15 +967,15 @@
     "@segment/analytics-next" "^1.53.2"
     react "^18.2.0"
 
-"@imtbl/sdk@^1.30.0":
-  version "1.30.4"
-  resolved "https://registry.yarnpkg.com/@imtbl/sdk/-/sdk-1.30.4.tgz#c674a701ed1d584762cf3b6e08c797e2048d82d9"
-  integrity sha512-8DBBEI2r09O7fR7kp3y+TXhlI4JFK8DbpVe22ituQrtyydCd0dWjtLQDlKTIkkTjPptYKHWEkZlLtD8sKpju8Q==
+"@imtbl/sdk@^1.31.1":
+  version "1.31.1"
+  resolved "https://registry.yarnpkg.com/@imtbl/sdk/-/sdk-1.31.1.tgz#8fd7c0b880355056518cdd24c9115b26bac18faa"
+  integrity sha512-kdGqU6R0OfK7V0oLayaJCqiwt1lynsqXuYziv8QlJHveSzPSSXtRiXxe1H+7Oe7PxXW5vZPOoxUz4KYukgVwbw==
   dependencies:
     "@0xsequence/abi" "^1.4.3"
     "@0xsequence/core" "^1.4.3"
     "@biom3/design-tokens" "^0.3.7"
-    "@biom3/react" "^0.22.5"
+    "@biom3/react" "^0.22.8"
     "@ethersproject/abi" "^5.7.0"
     "@ethersproject/abstract-signer" "^5.7.0"
     "@ethersproject/keccak256" "^5.7.0"

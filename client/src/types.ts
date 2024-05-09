@@ -20,3 +20,7 @@ export type PassportModuleConfiguration = {
   scope?: string;
   audience?: string;
 };
+export type Provider = {
+  on: (event: string, listener: (...args: any[]) => void) => void;
+  removeListener: (event: string, listener: (...args: any[]) => void) => void;
+}

@@ -44,13 +44,11 @@ function ItemPage() {
   };
   useEffect(() => {
     if (token && id) {
-      console.log({ PATH_DATA });
       refreshDataHandler(token, id);
     }
   }, [token, id]);
-  useEffect(() => {
-    console.log("singleNftData", { singleNftData, loadingData });
-  }, [singleNftData, loadingData]);
+  // useEffect(() => {
+  // }, [singleNftData, loadingData]);
 
   // for date picker
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -124,6 +122,18 @@ function ItemPage() {
   const deleteItem = (id: number) => {
     setSelectedItems(selectedItems.filter((item) => item.id !== id));
   };
+
+  if (loadingData) {
+    return (
+      <div>
+        <Header />
+        <div className="loading-page">Loading... NFT</div>
+        <Footer />
+        </div>
+    )
+  }
+
+
   return (
     <div>
       <Header />
