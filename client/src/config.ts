@@ -20,8 +20,8 @@ export const LOGOUT_URL = `${BASE_URL}`;
 
 export const PASSPORT_CONFIG: PassportModuleConfiguration = {
   baseConfig: {
-    // environment: config.Environment.SANDBOX,
-    environment: config.Environment.PRODUCTION,
+    environment: config.Environment.SANDBOX,
+    // environment: config.Environment.PRODUCTION,
     publishableKey: PUBLISHABLE_KEY,
     apiKey: API_KEY,
   },
