@@ -6,9 +6,10 @@ import React, {
   useState,
   Dispatch,
 } from "react";
-import { CHAIN_NAME, CLIENT, LOGOUT_URL, passportInstance } from "../config";
+import { CHAIN_NAME, CLIENT, LOGOUT_URL, PUBLISHABLE_KEY, passportInstance } from "../config";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { ImxConnectionDataType, UserProfileType } from "../types";
+import { checkout, config } from "@imtbl/sdk";
 
 
 interface IMXContextType {
@@ -21,10 +22,11 @@ interface IMXContextType {
   setImxConnectionData: Dispatch<ImxConnectionDataType>;
 
   getUserData: () => void;
-  logoutWithUserPassport: () => void;
+  Connect__Passport__Handle:() => Promise<void>,
+  Logout_Passport_Handle: () => void;
   loginSuccessCallback: () => void;
   logoutSuccessCallback: () => void;
-  refreshSingleNftData: (contractAddress: string, tokenId: string) => Promise<void>;
+  getSingleNftData: (contractAddress: string, tokenId: string) => Promise<void>;
 
   navigate: NavigateFunction;
 }
@@ -36,7 +38,15 @@ interface IMXContextProviderProps {
 export const IMXContextProvider: React.FC<IMXContextProviderProps> = ({
   children,
 }) => {
+
+  //!==================== STATES =================
   const navigate = useNavigate();
+      
+  const [connectModal, 
+    setConnectModal
+  ] =
+    useState<checkout.Widget<typeof checkout.WidgetType.CONNECT>>();
+
   const [userProfileData, setUserProfileData] =
     useState<UserProfileType>(undefined);
   const [imxConnectionData, setImxConnectionData] =
@@ -45,28 +55,91 @@ export const IMXContextProvider: React.FC<IMXContextProviderProps> = ({
     const [userInventoryData, setUserInventoryData] = useState<any | null>(null)
     const [singleNftData, setsingleNftData] = useState<any | null>(null)
 
-  // const listCollectionsByNFTOwner = async (
-  //   client: ClientType,
-  //   chainName: string,
-  //   accountAddress: string,
-  //   contractAddress: string
-  // ) => {
-  //   const ownerCollections = await client.listCollectionsByNFTOwner({
-  //     chainName,
-  //     accountAddress,
-  //   });
-  //   const response = await client.listNFTsByAccountAddress({
-  //     chainName,
-  //     accountAddress,
-  //     contractAddress,
-  //   });
-  //   console.log("ownerCollections", ownerCollections);
-  //   console.log("response", response);
-  // };
+  //!==================== USER WALLET CONNECTION AND PROVIDERS =================
+
+
+  const getUserData = async () => {
+    try {
+      const userInfo: UserProfileType = await passportInstance.getUserInfo();
+      const provider2 = passportInstance.connectEvm();
+      if (userInfo) {
+        setUserProfileData(userInfo);
+        const linkedAddresses = await passportInstance.getLinkedAddresses();
+        const provider = await passportInstance.connectImx();
+        // const accessToken = await passportInstance.getAccessToken();
+        // const idToken = await passportInstance.getIdToken();
+        // const _address = await provider.getAddress();
+
+        console.log("getUserData", {
+          userInfo,
+          provider2,
+          provider,
+          linkedAddresses,
+        });
+      }
+      // const userProfile: UserProfileType =
+      //   await passportInstance.login({ useCachedSession: true });
+      // console.log("userProfile", {  userProfile });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
+  const Connect__Passport__Handle = async () => {
+    try {
+ 
+      const baseConfig1 = {
+        environment: config.Environment.SANDBOX,
+        publishableKey: PUBLISHABLE_KEY,
+      };
+
+      const checkoutSDK1 = new checkout.Checkout({
+        baseConfig: baseConfig1,
+        passport: passportInstance,
+      });
+      const widgets = await checkoutSDK1.widgets({
+        config: { theme: checkout.WidgetTheme.DARK },
+      });
+      const connectModal = widgets.create(checkout.WidgetType.CONNECT);
+      setConnectModal(connectModal);
+    } catch (error) {
+      console.error(error);
+    } finally {
+    }
+  };
+
+
+  const Logout_Passport_Handle = async () => {
+    try {
+      // 3. Log the user out
+      // await passportInstance.logout();
+      navigate("/passportlogout");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const loginSuccessCallback = async () => {
+    passportInstance.loginCallback();
+    navigate("/");
+  };
+
+  const logoutSuccessCallback = async () => {
+    await passportInstance.logoutSilentCallback(LOGOUT_URL);
+    setUserProfileData(undefined);
+    setImxConnectionData(null);
+    navigate("/");
+  };
+
+
+
+  //!==================== USER WALLET INVENTORY =================
 
   const getUserInventory = async (
     accountAddress: string,
-    pageCursor?:string
+    pageCursor?:string,
+    // oldData?:any[]
   ) => {
     try {
       setinventoryDataLoading(true)
@@ -88,7 +161,10 @@ export const IMXContextProvider: React.FC<IMXContextProviderProps> = ({
     }
   };
 
-  const refreshSingleNftData = async (
+
+  //!==================== SINGLE NFT DATA =================
+
+  const getSingleNftData = async (
     contractAddress: string,
     tokenId: string
   ) => {
@@ -118,53 +194,10 @@ export const IMXContextProvider: React.FC<IMXContextProviderProps> = ({
     }
   };
 
-  const getUserData = async () => {
-    try {
-      const userInfo: UserProfileType = await passportInstance.getUserInfo();
-      const provider2 = passportInstance.connectEvm();
-      if (userInfo) {
-        setUserProfileData(userInfo);
-        const linkedAddresses = await passportInstance.getLinkedAddresses();
-        const provider = await passportInstance.connectImx();
-        // const accessToken = await passportInstance.getAccessToken();
-        // const idToken = await passportInstance.getIdToken();
-        // const _address = await provider.getAddress();
 
-        console.log("getUserData", {
-          userInfo,
-          provider2,
-          provider,
-          linkedAddresses,
-        });
-      }
-      // const userProfile: UserProfileType =
-      //   await passportInstance.login({ useCachedSession: true });
-      // console.log("userProfile", {  userProfile });
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
-  // const getNFTData = async () => {
-  //   try {
-  //     const chainName = CHAIN_NAME;
-  //     const contractAddress = "0x8a90cab2b38dba80c64b7734e58ee1db38b8992e";
-  //     const tokenId = ['1', '2'];
-  //     const response = await client.listNFTs({chainName, contractAddress, tokenId });
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  // };
+  //!==================== EFFECT HOOKS AND INITIAL CALLS =================
 
-  const logoutWithUserPassport = async () => {
-    try {
-      // 3. Log the user out
-      // await passportInstance.logout();
-      navigate("/passportlogout");
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   useEffect(() => {
     // const contractAddress = "0x1f7072f8c22f87d89aa27329094cdc04dcd7f1cc";
@@ -172,6 +205,8 @@ export const IMXContextProvider: React.FC<IMXContextProviderProps> = ({
     const accountAddress = "0x808f0597D8B83189ED43d61d40064195F71C0D15";
     //    listCollectionsByNFTOwner(CLIENT,chainName,accountAddress,contractAddress)
     getUserInventory(accountAddress);
+
+    getUserData()
   }, []);
 
   useEffect(() => {
@@ -181,16 +216,44 @@ export const IMXContextProvider: React.FC<IMXContextProviderProps> = ({
     }
   }, [imxConnectionData]);
 
-  const loginSuccessCallback = async () => {
-    passportInstance.loginCallback();
-    navigate("/");
-  };
-  const logoutSuccessCallback = async () => {
-    await passportInstance.logoutSilentCallback(LOGOUT_URL);
-    setUserProfileData(undefined);
-    setImxConnectionData(null);
-    navigate("/");
-  };
+
+
+  
+ 
+
+  
+  useEffect(() => {
+    if (!connectModal) return;
+
+    connectModal.mount("connectModal");
+
+    connectModal.addListener(
+      checkout.ConnectEventType.SUCCESS,
+      (data: ImxConnectionDataType) => {
+        console.log("success", data);
+        setImxConnectionData(data)
+        navigate('/');
+
+        // connectModal.unmount();
+      }
+    );
+    connectModal.addListener(
+      checkout.ConnectEventType.FAILURE,
+      (data: checkout.ConnectionFailed) => {
+        console.log("failure", data);
+        setImxConnectionData(null)
+
+
+      }
+    );
+    connectModal.addListener(checkout.ConnectEventType.CLOSE_WIDGET, () => {
+      getUserData()
+      connectModal.unmount();
+        navigate('/');
+
+    });
+  }, [connectModal]);
+
 
   const value: IMXContextType = {
     userProfileData,
@@ -200,9 +263,10 @@ export const IMXContextProvider: React.FC<IMXContextProviderProps> = ({
     singleNftData,
     setImxConnectionData,
     getUserData,
-    logoutWithUserPassport,
+    Connect__Passport__Handle,
+    Logout_Passport_Handle,
     setUserProfileData,
-    refreshSingleNftData,
+    getSingleNftData,
     navigate,
     loginSuccessCallback,
     logoutSuccessCallback,

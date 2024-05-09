@@ -1,80 +1,14 @@
 // import React from 'react'
-import { useEffect, useState } from "react";
-import { PUBLISHABLE_KEY, passportInstance } from "../config.ts";
+import { useEffect } from "react";
 import Header from "../components/Header.tsx";
 import { Row, Col } from "react-bootstrap";
 import { MorraLogo } from "../Imports/ImportImages.ts";
-import { checkout, config } from "@imtbl/sdk";
 import { useIMXContext } from "../context/ImmutableContext.tsx";
-import { ImxConnectionDataType } from "../types.ts";
 // import { useNavigate } from "react-router-dom";
 // import { Link } from 'react-router-dom';
 // const checkoutSDK = new checkout.Checkout();
 const ConnectWallet = () => {
-  const{getUserData,setImxConnectionData,navigate}=useIMXContext()
-
-  
-  const [connect, 
-    setConnect
-  ] =
-    useState<checkout.Widget<typeof checkout.WidgetType.CONNECT>>();
-
-  
-  const Connect__Passport__Handle = async () => {
-    try {
- 
-      const baseConfig1 = {
-        environment: config.Environment.SANDBOX,
-        publishableKey: PUBLISHABLE_KEY,
-      };
-
-      const checkoutSDK1 = new checkout.Checkout({
-        baseConfig: baseConfig1,
-        passport: passportInstance,
-      });
-      const widgets = await checkoutSDK1.widgets({
-        config: { theme: checkout.WidgetTheme.DARK },
-      });
-      const connect = widgets.create(checkout.WidgetType.CONNECT);
-      setConnect(connect);
-    } catch (error) {
-      console.error(error);
-    } finally {
-    }
-  };
-
-  
-  useEffect(() => {
-    if (!connect) return;
-
-    connect.mount("connect");
-
-    connect.addListener(
-      checkout.ConnectEventType.SUCCESS,
-      (data: ImxConnectionDataType) => {
-        console.log("success", data);
-        setImxConnectionData(data)
-        navigate('/');
-
-        // connect.unmount();
-      }
-    );
-    connect.addListener(
-      checkout.ConnectEventType.FAILURE,
-      (data: checkout.ConnectionFailed) => {
-        console.log("failure", data);
-        setImxConnectionData(null)
-
-
-      }
-    );
-    connect.addListener(checkout.ConnectEventType.CLOSE_WIDGET, () => {
-      getUserData()
-      connect.unmount();
-        navigate('/');
-
-    });
-  }, [connect]);
+  const{Connect__Passport__Handle}=useIMXContext()
 
   
   useEffect(() => {
@@ -94,7 +28,7 @@ const ConnectWallet = () => {
           <Col lg={6}>
             <div className="login-content">
               {/* <h2>Connect with:</h2> */}
-              <div id="connect"></div>
+              <div id="connectModal"></div>
             </div>
           </Col>
         </Row>

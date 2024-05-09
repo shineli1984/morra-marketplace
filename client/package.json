@@ -15,7 +15,7 @@
     "@types/jquery": "^3.5.29",
     "@types/popper.js": "^1.11.0",
     "bootstrap": "^5.3.3",
-    "ethers": "^5.7.2",
+    "ethers": "5.7.2",
     "node-stdlib-browser": "^1.2.0",
     "path": "^0.12.7",
     "react": "^18.2.0",

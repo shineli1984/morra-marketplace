@@ -19,7 +19,7 @@ import { useIMXContext } from "../context/ImmutableContext";
 
 const Header = () => {
   const navigate = useNavigate();
-  const{userProfileData,logoutWithUserPassport,imxConnectionData}=useIMXContext()
+  const{userProfileData,Logout_Passport_Handle,imxConnectionData}=useIMXContext()
 
   const handle_connectWallet = () => {
     navigate('/connectwallet');
@@ -163,7 +163,7 @@ const Header = () => {
               </div>
             </div>
             <div className="profile-bottom">
-              <div onClick={() => userProfileData?logoutWithUserPassport():handle_connectWallet()} className="custom-btn d-block">
+              <div onClick={() => userProfileData?Logout_Passport_Handle():handle_connectWallet()} className="custom-btn d-block">
                 <img src={Signout} alt="signout" />
                 {userProfileData?"Sign Out":"Connect Wallet"}
               </div>

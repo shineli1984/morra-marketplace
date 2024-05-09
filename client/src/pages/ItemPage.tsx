@@ -27,18 +27,19 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useIMXContext } from "../context/ImmutableContext";
 import { shortenWalletAddress } from "../helper";
+import { TEST_NFT_ACTIVITIES } from "../testData";
 
 function ItemPage() {
   const { token, id } = useParams();
   let location = useLocation();
   let { pathname, search } = location;
   let PATH_DATA = `${pathname}${search}`.split("/").slice(1);
-  const { refreshSingleNftData, singleNftData } = useIMXContext();
+  const { getSingleNftData, singleNftData } = useIMXContext();
   const [loadingData, setloadingData] = useState(false);
   // Extracting the parameter from the URL
   const refreshDataHandler = async (_token: string, _id: string) => {
     setloadingData(true);
-    await refreshSingleNftData(_token, _id);
+    await getSingleNftData(_token, _id);
     setloadingData(false);
   };
   useEffect(() => {
@@ -60,43 +61,7 @@ function ItemPage() {
 
   const { width } = useWindowDimensions();
   const [searchQuery, setSearchQuery] = useState("");
-  const [tableData] = useState([
-    {
-      column1: "Transfer",
-      column2: "0.920 ETH",
-      column3: "SamaxX",
-      column4: "Virgo_NFT_Liquidity_P...",
-      column5: "13d ago",
-    },
-    {
-      column1: "Sale",
-      column2: "0.779 WETH",
-      column3: "SamaxX",
-      column4: "Virgo_NFT_Liquidity_P...",
-      column5: "13d ago",
-    },
-    {
-      column1: "Transfer",
-      column2: "0.920 ETH",
-      column3: "Tkoll",
-      column4: "SamaxX",
-      column5: "28d ago",
-    },
-    {
-      column1: "Sale",
-      column2: "0.779 WETH",
-      column3: "SamaxX",
-      column4: "Virgo_NFT_Liquidity_P...",
-      column5: "13d ago",
-    },
-    {
-      column1: "Transfer",
-      column2: "0.920 ETH",
-      column3: "Tkoll",
-      column4: "SamaxX",
-      column5: "28d ago",
-    },
-  ]);
+  const [tableData] = useState(TEST_NFT_ACTIVITIES);
   const [selectedItems, setSelectedItems] = useState<
     { name: string; id: number }[]
   >([]);
@@ -117,7 +82,7 @@ function ItemPage() {
   ) => {
     if (event.key === "Enter") {
       const firstFilteredItem = tableData.find((item) =>
-        item.column1.toLowerCase().startsWith(searchQuery.toLowerCase())
+        item.type.toLowerCase().startsWith(searchQuery.toLowerCase())
       );
       if (firstFilteredItem) {
         handleRowClick(firstFilteredItem);
@@ -127,8 +92,8 @@ function ItemPage() {
     }
   };
 
-  const handleRowClick = (item: { column1: string }) => {
-    const firstWord = item.column1.split(" ")[0];
+  const handleRowClick = (item: { type: string }) => {
+    const firstWord = item.type.split(" ")[0];
     if (
       !selectedItems.some((selectedItem) => selectedItem.name === firstWord)
     ) {
@@ -141,7 +106,7 @@ function ItemPage() {
 
   const handleRowKeyDown = (
     event: React.KeyboardEvent<HTMLTableRowElement>,
-    item: { column1: string }
+    item: { type: string }
   ) => {
     if (event.key === "Enter") {
       handleRowClick(item);
@@ -149,7 +114,7 @@ function ItemPage() {
   };
 
   const filteredData = tableData.filter((item) =>
-    item.column1.toLowerCase().startsWith(searchQuery.toLowerCase())
+    item.type.toLowerCase().startsWith(searchQuery.toLowerCase())
   );
 
   const clearAllSelectedItems = () => {
@@ -480,11 +445,11 @@ function ItemPage() {
                     onKeyDown={(event) => handleRowKeyDown(event, item)}
                     tabIndex={0}
                   >
-                    <td>{item.column1}</td>
-                    <td>{item.column2}</td>
-                    <td>{item.column3}</td>
-                    <td>{item.column4}</td>
-                    <td>{item.column5}</td>
+                    <td>{item.type}</td>
+                    <td>{item?.details?.payment?.price_including_fees??"00.00"}</td>
+                    <td>{shortenWalletAddress(item?.details?.from)}</td>
+                    <td>{shortenWalletAddress(item?.details?.to)}</td>
+                    <td>{item.updated_at}</td>
                   </tr>
                 ))}
               </tbody>
